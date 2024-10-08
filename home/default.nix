@@ -13,6 +13,8 @@
     less
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     parallel
+    k9s
+    bash
   ];
   home.shellAliases = {
     nix-reload = "pushd ~/nix && home-manager switch --flake . && . ~/.config/zsh/.zshrc; popd";
