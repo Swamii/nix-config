@@ -203,23 +203,6 @@
       name = "JetBrainsMono Nerd Font";
     };
     theme = "Gruvbox Light Hard";
-    keybindings = {
-      "ctrl+a>h" = "neighboring_window left";
-      "ctrl+a>j" = "neighboring_window down";
-      "ctrl+a>k" = "neighboring_window up";
-      "ctrl+a>l" = "neighboring_window right";
-      "ctrl+a>z" = "toggle_layout stack";
-      "ctrl+f" = "launch --type=overlay --stdin-source=@screen_scrollback ~/.nix-profile/bin/fzf -i --preview='~/.nix-profile/bin/bat --style=numbers --color=always --highlight-line {2} {1}'";
-      "ctrl+1" = "goto_tab 1";
-      "ctrl+2" = "goto_tab 2";
-      "ctrl+3" = "goto_tab 3";
-      "ctrl+4" = "goto_tab 4";
-      "ctrl+5" = "goto_tab 5";
-      "ctrl+6" = "goto_tab 6";
-      "ctrl+7" = "goto_tab 7";
-      "ctrl+8" = "goto_tab 8";
-      "ctrl+9" = "goto_tab 9";
-    };
     settings = {
       enabled_layouts = "vertical, stack";
       window_border_width = "2pt";
@@ -291,6 +274,50 @@
   programs.eza = {
     enable = true;
   };
+  programs.zellij = {
+    enable = true;
+    settings = {
+      theme = "gruvbox-light";
+      themes.gruvbox-light = {
+        fg = "#3c3836";
+        bg = "#fb514b";
+        black = "#282828";
+        red = "#cd4c45";
+        green = "#98981a";
+        yellow = "#d79a21";
+        blue = "#458588";
+        magenta = "#b16286";
+        cyan = "#689d6a";
+        white = "#d5c4a1";
+        orange = "#d65e0e";
+      };
+
+      pane_frames = false;
+
+      keybinds = {
+        tmux = {
+          unbind = "Ctrl b";
+          "bind \"Ctrl a\"" = { Write = 2; SwitchToMode = "Normal"; };
+          "bind \"a\"" = { WriteChars = "\r"; };
+        };
+        "shared_except \"tmux\" \"locked\"" = {
+          unbind = "Ctrl b";
+          "bind \"Ctrl a\"" = { SwitchToMode = "Tmux"; };
+        };
+      };
+    };
+  };
+  xdg.configFile."zellij/layouts/default.kdl".text = ''
+  layout {
+    pane size=1 borderless=true {
+      plugin location="zellij:tab-bar"
+    }
+    pane
+    pane size=2 borderless=true {
+      plugin location="zellij:status-bar"
+    }
+  }
+  '';
   
   xdg = {
     enable = true;
