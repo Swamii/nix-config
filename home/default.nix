@@ -297,8 +297,7 @@
       keybinds = {
         tmux = {
           unbind = "Ctrl b";
-          "bind \"Ctrl a\"" = { Write = 2; SwitchToMode = "Normal"; };
-          "bind \"a\"" = { WriteChars = "\r"; };
+          "bind \"Ctrl a\"" = { Write = 1; SwitchToMode = "Normal"; };
         };
         "shared_except \"tmux\" \"locked\"" = {
           unbind = "Ctrl b";
