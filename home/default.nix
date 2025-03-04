@@ -15,6 +15,7 @@
     parallel
     k9s
     bash
+    nodejs_22
   ];
   home.shellAliases = {
     nix-reload = "pushd ~/nix && home-manager switch --flake . && . ~/.config/zsh/.zshrc; popd";
