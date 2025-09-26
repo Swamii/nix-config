@@ -173,6 +173,7 @@
       "Thumbs.db"
       ".Spotlight-V100"
       ".Trashes"
+      ".claude"
     ];
     aliases = {
       st = "status -s -b";
