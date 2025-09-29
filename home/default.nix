@@ -1,4 +1,4 @@
-{ pkgs, username, config, ... }: {
+{ pkgs, username, config, lib, ... }: {
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "22.11";
   home.username = username;
@@ -11,7 +11,7 @@
     coreutils
     curl
     less
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    nerd-fonts.jetbrains-mono
     parallel
     k9s
     bash
@@ -60,18 +60,35 @@
     autocd = true;
     defaultKeymap = "emacs";
     dotDir = ".config/zsh";
-    initExtraFirst = ''
-      # Nix
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      fi
-      # End Nix
-    '';
-    initExtra = ''
-      zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
-      bindkey "^F" forward-word
-      bindkey "^B" backward-word
-    '';
+    initContent = 
+      let 
+        initExtraFirst = lib.mkOrder 500 ''
+          # Nix initExtraFirst
+          if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+            . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+          fi
+          # End Nix initExtraFirst
+        '';
+        initExtra = lib.mkOrder 1000 ''
+          # Nix initExtra
+          zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+          bindkey "^F" forward-word
+          bindkey "^B" backward-word
+          # End Nix initExtra
+        '';
+      in lib.mkMerge [ initExtraFirst initExtra ];
+    # initExtraFirst = ''
+    #   # Nix
+    #   if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    #     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    #   fi
+    #   # End Nix
+    # '';
+    # initExtra = ''
+    #   zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+    #   bindkey "^F" forward-word
+    #   bindkey "^B" backward-word
+    # '';
     history = {
       expireDuplicatesFirst = true;
       extended = true;
@@ -204,7 +221,7 @@
       size = 13;
       name = "JetBrainsMono Nerd Font";
     };
-    theme = "Gruvbox Light Hard";
+    themeFile = "GruvboxMaterialLightHard";
     settings = {
       enabled_layouts = "vertical, stack";
       window_border_width = "2pt";
