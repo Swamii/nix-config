@@ -43,13 +43,6 @@
     # set editing-mode vi-insert
   '';
 
-  # TODO: place this somewhere else (configuration.nix?)
-  # nixpkgs = {
-  #   allowUnfree = true;
-  #   # Workaround for https://github.com/nix-community/home-manager/issues/2942
-  #   allowUnfreePredicate = (_: true);
-  # };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   programs.zsh = {
@@ -228,6 +221,15 @@
       scrollback_lines = 10000;
       macos_show_window_title_in = "window";
       tab_bar_style = "slant";
+    };
+  };
+  programs.ghostty = {
+    enable = true;
+    package = null; # Broken on darwin: https://github.com/NixOS/nixpkgs/issues/388984
+    settings = {
+      font-family = "JetBrainsMonoNL Nerd Font Mono";
+      font-size = "14";
+      theme = "Gruvbox Material Light";
     };
   };
   programs.tmux = {
