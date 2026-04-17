@@ -18,7 +18,13 @@
     nodejs_22
   ];
   home.shellAliases = {
-    nix-reload = "pushd ~/nix && home-manager switch --flake . && . ~/.config/zsh/.zshrc; popd";
+    nix-reload = ''
+    pushd ~/nix && 
+    home-manager switch --flake . && 
+    export __HM_ZSH_SESS_VARS_SOURCED= && 
+    . ~/.config/zsh/.zshrc; 
+    popd
+    '';
     pycharm = "~/Library/Application\\ Support/JetBrains/Toolbox/scripts/pycharm";
     ls = "eza";
     ll = "eza -la";
@@ -32,6 +38,10 @@
     LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
     CLICLOLOR = 1;
   };
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/nodejs_22/node_modules/.bin"
+  ];
   home.file.".inputrc".text = ''
     set show-all-if-ambiguous on
     set completion-ignore-case on
@@ -70,18 +80,6 @@
           # End Nix initExtra
         '';
       in lib.mkMerge [ initExtraFirst initExtra ];
-    # initExtraFirst = ''
-    #   # Nix
-    #   if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-    #     . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-    #   fi
-    #   # End Nix
-    # '';
-    # initExtra = ''
-    #   zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
-    #   bindkey "^F" forward-word
-    #   bindkey "^B" backward-word
-    # '';
     history = {
       expireDuplicatesFirst = true;
       extended = true;
