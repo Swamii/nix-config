@@ -15,7 +15,7 @@
     parallel
     k9s
     bash
-    nodejs_22
+    nodejs_26
   ];
   home.shellAliases = {
     nix-reload = ''
