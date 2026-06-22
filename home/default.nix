@@ -62,7 +62,7 @@
     syntaxHighlighting.enable = true;
     autocd = true;
     defaultKeymap = "emacs";
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     initContent = 
       let 
         initExtraFirst = lib.mkOrder 500 ''
@@ -134,10 +134,15 @@
   };
   programs.ssh = {
     enable = true;
-    forwardAgent = true;
+    enableDefaultConfig = false;
     includes = [ "config.d/*" ];
-    serverAliveInterval = 300;
-    serverAliveCountMax = 2;
+    settings = {
+      "*" = {
+        ForwardAgent = true;
+        ServerAliveInterval = 300;
+        ServerAliveCountMax = 2;
+      };
+    };
     extraConfig = ''
       AddKeysToAgent ask
       IgnoreUnknown UseKeychain
@@ -148,23 +153,30 @@
   };
   programs.git = {
     enable = true;
-    userName = "Akseli Nelander";
-    userEmail = "anelander@gmail.com";
     signing = {
       signByDefault = true;
       key = "0xDD5A5EFD353F0622 ";
     };
     lfs.enable = true;
-    # difftastic.enable = true;
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Akseli Nelander";
+        email = "anelander@gmail.com";
+      };
+      alias = {
+        st = "status -s -b";
+        up = "pull --rebase --autostash";
+        co = "checkout";
+      };
       apply.whitespace = "fix";
-      core.trustctime = false;
-      core.whitespace = "space-before-tab,-indent-with-non-tab,trailing-space";
+      core = {
+        trustctime = false;
+        whitespace = "space-before-tab,-indent-with-non-tab,trailing-space";
+      };
       init.defaultBranch = "main";
       github.user = "Swamii";
       pull.rebase = true;
       fetch.prune = true;
-      # Correct typos
       help.autocorrect = 1;
     };
     ignores = [
@@ -183,11 +195,6 @@
       ".Trashes"
       ".claude"
     ];
-    aliases = {
-      st = "status -s -b";
-      up = "pull --rebase --autostash";
-      co = "checkout";
-    };
   };
   programs.dircolors = {
     enable = true;
@@ -200,6 +207,8 @@
     vimAlias = true;
     vimdiffAlias = true;
     viAlias = true;
+    withPython3 = false; # opt into new behavior
+    withRuby = false; # opt into new behavior
     plugins = with pkgs.vimPlugins; [ editorconfig-vim gruvbox vim-nix ];
     extraConfig = ''
       :imap jk <Esc>
